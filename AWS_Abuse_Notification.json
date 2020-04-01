@@ -3,10 +3,29 @@
   "Parameters": {
     "SNSTopicName": {
       "Type": "String",
-      "Description": "Please enter your SNS Topic Name. (SNS Topic must exist in the same region where this stack is launched)."
+      "Description": "Please enter your SNS Topic Name"
+    },
+    "EmailAddress": {
+      "Type": "String",
+      "Description": "Please enter your email address"
+    },
+    "MobilePhone": {
+      "Type": "String",
+      "Description": "Please enter your mobile number with country code, for example, +8615988888888"
     }
   },
   "Resources": {
+    "SnsTopic": {
+      "Type": "AWS::SNS::Topic",
+      "Properties": {
+        "DisplayName": {"Ref":"SNSTopicName"},
+        "TopicName" : {"Ref":"SNSTopicName"},
+        "Subscription" : [
+          {"Endpoint": {"Ref":"EmailAddress"}, "Protocol": "email"},
+          {"Endpoint": {"Ref":"MobilePhone"}, "Protocol": "sms"}
+        ]
+      }
+    },
     "LambdaFunctionRole": {
       "Type": "AWS::IAM::Role",
       "Properties": {
@@ -213,3 +232,4 @@
     }
   }
 }
+
